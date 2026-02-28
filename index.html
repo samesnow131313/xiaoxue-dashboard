@@ -3,98 +3,489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>灏忛洩浠诲姟鐪嬫澘</title>
+    <title>小雪 - 智能助手控制台</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
-            font-family: 'Microsoft YaHei', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
             color: white;
         }
-        .container {
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+        
+        .nav-tab:hover, .nav-tab.active {
+            background: white;
+            color: #667eea;
+        }
+        
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #667eea;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        /* 任务看板 */
+        .task-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .task-column {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .task-column h3 {
+            color: #555;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .task-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 4px solid #667eea;
+        }
+        
+        .task-item.completed {
+            border-left-color: #28a745;
+            opacity: 0.7;
+        }
+        
+        .task-item.pending {
+            border-left-color: #ffc107;
+        }
+        
+        /* 文件仓库 */
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        
+        .file-list {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .file-item:hover {
+            background: #e9ecef;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-icon {
+            font-size: 1.5em;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd6;
+        }
+        
+        .btn-secondary {
+            background: #e9ecef;
+            color: #555;
+        }
+        
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+        
+        /* 桌宠下载 */
+        .pet-download {
             text-align: center;
             padding: 40px;
         }
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        .subtitle {
-            font-size: 1.2em;
+        
+        .pet-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
             margin-bottom: 30px;
-            opacity: 0.9;
         }
-        .links {
+        
+        .pet-card h3 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .pet-features {
             display: flex;
-            gap: 20px;
             justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
             flex-wrap: wrap;
         }
-        .link-card {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            padding: 25px 35px;
+        
+        .pet-feature {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
             border-radius: 15px;
+            min-width: 150px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            border-radius: 30px;
             text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.3s;
         }
-        .link-card:hover {
-            background: rgba(255,255,255,0.25);
-            transform: translateY(-5px);
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        .link-card h3 {
-            font-size: 1.3em;
+        
+        /* 小雪设定 */
+        .settings-content {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            line-height: 1.8;
+        }
+        
+        .settings-content h3 {
+            color: #667eea;
+            margin: 20px 0 10px;
+        }
+        
+        .settings-content ul {
+            margin-left: 20px;
+        }
+        
+        .settings-content li {
             margin-bottom: 8px;
         }
-        .link-card p {
-            font-size: 0.9em;
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: white;
             opacity: 0.8;
         }
-        .emoji {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pet-features {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>馃尐锔?灏忛洩浠诲姟鐪嬫澘</h1>
-        <p class="subtitle">瀹炴椂杩借釜浠诲姟銆佹寚浠や笌绯荤粺鐘舵€?/p>
+        <header>
+            <h1>🗡️ 小雪</h1>
+            <p>智能助手控制台 - 任务看板 · 文件仓库 · 桌宠下载</p>
+        </header>
         
-        <div class="links">
-            <a href="dashboard.html" class="link-card">
-                <div class="emoji">馃搳</div>
-                <h3>浠诲姟鐪嬫澘</h3>
-                <p>鏌ョ湅鎵€鏈変换鍔＄姸鎬?/p>
-            </a>
-            
-            <a href="https://github.com/samesnow131313/xiaoxue-dashboard" class="link-card" target="_blank">
-                <div class="emoji">馃悪</div>
-                <h3>GitHub 浠撳簱</h3>
-                <p>鏌ョ湅婧愪唬鐮?/p>
-            </a>
-            
-            <a href="pet/README.md" class="link-card">
-                <div class="emoji">馃惐</div>
-                <h3>妗屽疇椤圭洰</h3>
-                <p>浠欎緺妗屽疇鏂囨。</p>
-            </a>
-        </div>
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('tasks')">📋 任务看板</button>
+            <button class="nav-tab" onclick="showSection('files')">📁 文件仓库</button>
+            <button class="nav-tab" onclick="showSection('pet')">🐱 桌宠下载</button>
+            <button class="nav-tab" onclick="showSection('settings')">⚙️ 小雪设定</button>
+        </nav>
         
-        <p style="margin-top: 40px; opacity: 0.6; font-size: 0.9em;">
-            Powered by OpenClaw | 漏 2024 灏忛洩
-        </p>
+        <!-- 任务看板 -->
+        <section id="tasks" class="content-section active">
+            <h2 class="section-title">任务看板</h2>
+            <div class="task-board">
+                <div class="task-column">
+                    <h3>🟡 进行中</h3>
+                    <div class="task-item pending">
+                        <strong>桌宠项目</strong>
+                        <p>仙侠少女桌宠开发 - 3动作+对话功能</p>
+                    </div>
+                    <div class="task-item pending">
+                        <strong>网站重构</strong>
+                        <p>小雪控制台页面重新设计</p>
+                    </div>
+                </div>
+                <div class="task-column">
+                    <h3>🟢 已完成</h3>
+                    <div class="task-item completed">
+                        <strong>动画帧生成</strong>
+                        <p>Idle/Click/Happy 三动作共28帧</p>
+                    </div>
+                    <div class="task-item completed">
+                        <strong>代码框架</strong>
+                        <p>PyQt6桌宠基础框架搭建</p>
+                    </div>
+                </div>
+                <div class="task-column">
+                    <h3>🔵 待开始</h3>
+                    <div class="task-item">
+                        <strong>天气联动</strong>
+                        <p>桌宠根据天气自动切换状态</p>
+                    </div>
+                    <div class="task-item">
+                        <strong>语音功能</strong>
+                        <p>添加TTS语音交互</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 文件仓库 -->
+        <section id="files" class="content-section">
+            <h2 class="section-title">文件仓库</h2>
+            <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+                <input type="file" id="fileInput" style="display:none" multiple>
+                <div style="font-size: 3em; margin-bottom: 10px;">📤</div>
+                <p>点击或拖拽文件到此处上传</p>
+                <p style="color: #999; font-size: 0.9em; margin-top: 10px;">支持所有文件类型</p>
+            </div>
+            
+            <h3 style="margin-bottom: 15px;">已上传文件</h3>
+            <div class="file-list" id="fileList">
+                <div class="file-item">
+                    <div class="file-info">
+                        <span class="file-icon">📦</span>
+                        <div>
+                            <div><strong>pet.tar.gz</strong></div>
+                            <div style="color: #999; font-size: 0.85em;">8.7 MB · 2026-02-28</div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <a href="pet.tar.gz" download class="btn btn-primary">下载</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 桌宠下载 -->
+        <section id="pet" class="content-section">
+            <h2 class="section-title">桌宠下载</h2>
+            <div class="pet-download">
+                <div class="pet-card">
+                    <h3>🗡️ 仙侠少女桌宠</h3>
+                    <p>二次元古风仙侠主题桌面宠物</p>
+                    <div class="pet-features">
+                        <div class="pet-feature">
+                            <div style="font-size: 2em; margin-bottom: 5px;">✨</div>
+                            <div>3种动作</div>
+                            <div style="font-size: 0.85em; opacity: 0.8;">Idle/Click/Happy</div>
+                        </div>
+                        <div class="pet-feature">
+                            <div style="font-size: 2em; margin-bottom: 5px;">💬</div>
+                            <div>对话功能</div>
+                            <div style="font-size: 0.85em; opacity: 0.8;">连接OpenClaw</div>
+                        </div>
+                        <div class="pet-feature">
+                            <div style="font-size: 2em; margin-bottom: 5px;">🎨</div>
+                            <div>28帧动画</div>
+                            <div style="font-size: 0.85em; opacity: 0.8;">AI生成</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="pet/pet.tar.gz" download class="download-btn">⬇️ 下载桌宠 (8.7 MB)</a>
+                <p style="margin-top: 20px; color: #666;">
+                    下载后解压，进入 pet/src 文件夹运行 <code>python main.py</code>
+                </p>
+            </div>
+        </section>
+        
+        <!-- 小雪设定 -->
+        <section id="settings" class="content-section">
+            <h2 class="section-title">小雪设定</h2>
+            <div class="settings-content">
+                <h3>🕐 每日提醒任务</h3>
+                <ul>
+                    <li><strong>早安（9:00）</strong> - 查当日天气，提醒带伞、防晒或添衣</li>
+                    <li><strong>晚安（00:00）</strong> - 查天气，温柔道晚安，预告明日</li>
+                    <li><strong>健身（工作日 12:20）</strong> - 查天气，提醒运动，建议室内或户外</li>
+                </ul>
+                <p><strong>天气查询地点：</strong>杭州</p>
+                
+                <h3>📝 指令约定</h3>
+                <p>当宝宝说以下关键词时，立即将前文内容记录到设定文件：</p>
+                <ul>
+                    <li>"记下来"</li>
+                    <li>"记到小雪设定"</li>
+                    <li>"存档"</li>
+                    <li>"ok" / "完成"（确认重要决定时）</li>
+                </ul>
+                
+                <h3>🔐 GitHub 访问权限</h3>
+                <p><strong>仓库地址：</strong>https://github.com/samesnow131313/xiaoxue-dashboard</p>
+                <p>用于推送文件、备份数据、同步任务看板</p>
+                
+                <h3>💾 备份要求</h3>
+                <p>每天凌晨 1:00 自动读取设定文件发送确认</p>
+            </div>
+        </section>
+        
+        <footer>
+            <p>小雪智能助手 · 为你而生</p>
+            <p style="font-size: 0.85em; margin-top: 10px;">GitHub: samesnow131313/xiaoxue-dashboard</p>
+        </footer>
     </div>
+    
+    <script>
+        function showSection(sectionId) {
+            // 隐藏所有section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 移除所有tab的active
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 显示目标section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // 设置对应tab为active
+            event.target.classList.add('active');
+        }
+        
+        // 文件上传处理
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const fileList = document.getElementById('fileList');
+            
+            for (let file of files) {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <span class="file-icon">📄</span>
+                        <div>
+                            <div><strong>${file.name}</strong></div>
+                            <div style="color: #999; font-size: 0.85em;">${(file.size/1024/1024).toFixed(2)} MB · 刚刚</div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <span style="color: #28a745;">✓ 已上传</span>
+                    </div>
+                `;
+                fileList.insertBefore(fileItem, fileList.firstChild);
+            }
+        });
+    </script>
 </body>
 </html>
