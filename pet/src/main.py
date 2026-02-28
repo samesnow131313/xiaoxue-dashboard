@@ -113,20 +113,34 @@ class DesktopPet(QWidget):
         states = ['idle', 'click', 'happy']
         base_path = os.path.join(os.path.dirname(__file__), '..', 'assets')
         
+        print(f"加载资源路径: {base_path}")
+        
         for state in states:
             self.frames[state] = []
             state_path = os.path.join(base_path, state)
             
+            print(f"检查 {state} 路径: {state_path}")
+            
             if os.path.exists(state_path):
                 files = sorted([f for f in os.listdir(state_path) 
                               if f.endswith(('.png', '.webp', '.gif'))])
+                print(f"  找到 {len(files)} 个文件")
                 for f in files:
-                    pixmap = QPixmap(os.path.join(state_path, f))
-                    if not pixmap.isNull():
-                        self.frames[state].append(pixmap)
+                    try:
+                        pixmap = QPixmap(os.path.join(state_path, f))
+                        if not pixmap.isNull():
+                            self.frames[state].append(pixmap)
+                            print(f"  加载成功: {f}")
+                        else:
+                            print(f"  加载失败: {f}")
+                    except Exception as e:
+                        print(f"  错误 {f}: {e}")
+            else:
+                print(f"  路径不存在: {state_path}")
             
             # 如果没有资源，使用占位
             if not self.frames[state]:
+                print(f"  使用占位图")
                 self.frames[state] = [self.create_placeholder(state)]
     
     def create_placeholder(self, text):
@@ -241,13 +255,19 @@ class DesktopPet(QWidget):
 
 
 def main():
-    app = QApplication(sys.argv)
-    app.setQuitOnLastWindowClosed(False)
-    
-    pet = DesktopPet()
-    pet.show()
-    
-    sys.exit(app.exec())
+    import traceback
+    try:
+        app = QApplication(sys.argv)
+        app.setQuitOnLastWindowClosed(False)
+        
+        pet = DesktopPet()
+        pet.show()
+        
+        sys.exit(app.exec())
+    except Exception as e:
+        print(f"错误: {e}")
+        traceback.print_exc()
+        input("按回车键退出...")
 
 
 if __name__ == '__main__':
