@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灏忛洩浠诲姟鐪嬫澘</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        .links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .link-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 25px 35px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .link-card:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-5px);
+        }
+        .link-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 8px;
+        }
+        .link-card p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        .emoji {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>馃尐锔?灏忛洩浠诲姟鐪嬫澘</h1>
+        <p class="subtitle">瀹炴椂杩借釜浠诲姟銆佹寚浠や笌绯荤粺鐘舵€?/p>
+        
+        <div class="links">
+            <a href="dashboard.html" class="link-card">
+                <div class="emoji">馃搳</div>
+                <h3>浠诲姟鐪嬫澘</h3>
+                <p>鏌ョ湅鎵€鏈変换鍔＄姸鎬?/p>
+            </a>
+            
+            <a href="https://github.com/samesnow131313/xiaoxue-dashboard" class="link-card" target="_blank">
+                <div class="emoji">馃悪</div>
+                <h3>GitHub 浠撳簱</h3>
+                <p>鏌ョ湅婧愪唬鐮?/p>
+            </a>
+            
+            <a href="pet/README.md" class="link-card">
+                <div class="emoji">馃惐</div>
+                <h3>妗屽疇椤圭洰</h3>
+                <p>浠欎緺妗屽疇鏂囨。</p>
+            </a>
+        </div>
+        
+        <p style="margin-top: 40px; opacity: 0.6; font-size: 0.9em;">
+            Powered by OpenClaw | 漏 2024 灏忛洩
+        </p>
+    </div>
+</body>
+</html>
