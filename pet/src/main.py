@@ -256,9 +256,26 @@ class DesktopPet(QWidget):
 
 def main():
     import traceback
+    import os
+    
+    # Windows 平台设置
+    if os.name == 'nt':
+        import ctypes
+        # 设置 DPI 感知
+        try:
+            ctypes.windll.shcore.SetProcessDpiAwareness(1)
+        except:
+            pass
+    
     try:
         app = QApplication(sys.argv)
         app.setQuitOnLastWindowClosed(False)
+        
+        # 检查资源文件
+        base_path = os.path.join(os.path.dirname(__file__), '..', 'assets')
+        if not os.path.exists(base_path):
+            print(f"警告: 资源路径不存在: {base_path}")
+            print("请确保 assets 文件夹存在")
         
         pet = DesktopPet()
         pet.show()
