@@ -264,7 +264,7 @@ class ChatDialog(QWidget):
     def quick_send(self, text):
         """快捷发送"""
         self.input_field.setText(text)
-        self.send_message()
+        self.input_field.returnPressed.emit()  # 模拟回车
         
     def send_message(self):
         """发送消息"""
